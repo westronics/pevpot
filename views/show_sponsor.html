@@ -1,0 +1,82 @@
+{% extends "main.html" %}
+
+{% block title %}Sponsor Page{% endblock %}
+{% block content %}
+
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-1">
+        <h2 class="text-center">Sponsorship Info</h2>
+        <br>
+        <div class="jumbotron">
+          <br>
+          <p><strong>Name: </strong>{{ sponsor.name }}</p>
+          <p><strong>URL: </strong><a href="{{ sponsor.url }}">{{ sponsor.url }}</a></p>
+          <p><strong>Pic: </strong><a href="{{ sponsor.url }}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}" style="margin-bottom: 15px;"></a></p>
+        </div>
+      </div>
+
+    <div class="col-lg-4">
+      <h2 class="text-center">How to Sponsor</h2>
+      <br>
+      <h4 class="text-center">Send bitcoin to this sponsor address:</h4>
+      <p class="text-center"><code>{{ sponsor.bitcoin_address }}</code>
+        <a href="https://www.blocktrail.com/BTC/address/{{ sponsor.bitcoin_address }}" target="_blank">
+          <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+        </a></p>
+      <p class="text-center text-muted">(this address does not change)</p>
+      <ul>
+        <li class="read">All bitcoin sent to this address is tallied up during each
+          draw, and the total is used as the sponsorship amount for next draw.</li>
+        <li class="read">The draws top 5 sponsors are shown
+          on the primary lotto page for the draw. All others will be shown on an
+        expanded view</li>
+        <li class="read">90% of all sponsorship funds will go to draws pot</li>
+      </ul>
+        <p class="read"><strong>Thank you for making PevPot lottery possible <i class="fa fa-smile-o"></i>.</strong></p>
+      <br>
+    </div>
+  </div>
+  <div class="row">
+    <hr>
+    <h2>Recieved Payments</h2>
+    <br>
+    {% for draw,info in draws %}
+    <h4>Draw #{{draw}} <small>({{ info.totalRecieved|formatSatoshis }} btc)</small></h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>BTC transaction</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in info.sponsorPayments %}
+          <tr>
+          <td>
+            <a style="display: block;" href="https://www.blocktrail.com/BTC/tx/{{ payment.txid }}?txoutIdx={{ payment.vout }}" target="_blank">{{ payment.txid }}</a>
+          </td>
+          <td>
+            {{ payment.amount|formatSatoshis }} btc
+          </td>
+          <td>
+            {% if payment.block_height == null %}<span class="label label-warning">Unconfirmed</span>
+            {% elif payment.dust %}<span class="label label-danger">Ignored Dust</span>
+            {% else %}<span class="label label-success">Processed</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+   </tbody>
+   </table>
+ {% else %}
+   No payments recieved yet :()
+ {% endfor %}
+
+  </div>
+  </div>
+</section>
+
+{% endblock %}

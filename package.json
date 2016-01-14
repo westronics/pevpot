@@ -1,0 +1,47 @@
+{
+  "name": "pevpot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start-dev": "env $(cat .env | xargs) nodemon index",
+    "sandbox": "env $(cat .env | xargs) nodemon sandbox",
+    "reset-db": "env $(cat .env | xargs) node ./db/reset_db",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-assert": "^1.0.2",
+    "big-integer": "^1.6.7",
+    "bignum": "^0.11.0",
+    "bitcoinjs-lib": "^2.1.1",
+    "bitcoinjs-message": "^1.0.0",
+    "bootstrap": "^3.3.5",
+    "co": "^4.6.0",
+    "co-busboy": "^1.3.1",
+    "co-fs": "^1.2.0",
+    "co-pg": "^1.3.1",
+    "co-request": "^1.0.0",
+    "debug": "^2.2.0",
+    "font-awesome": "^4.4.0",
+    "gm": "^1.20.0",
+    "jquery": "^2.1.4",
+    "koa": "^1.1.0",
+    "koa-bodyparser": "^2.0.1",
+    "koa-bouncer": "^3.0.0",
+    "koa-logger": "^1.3.0",
+    "koa-nunjucks-render": "^1.1.0",
+    "koa-router": "^5.2.3",
+    "koa-send": "^2.0.1",
+    "koa-static": "^1.5.1",
+    "node-forge": "^0.6.38",
+    "pevpot-stretch": "^1.0.1",
+    "pg": "^4.4.3",
+    "simple-timeago": "^1.0.0"
+  },
+  "engines": {
+    "node": "5.0.x"
+  }
+}

@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+
+{% block title %} {{ address }}   {% endblock %}
+{% block content %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <h1 class="text-center text-uppercase">{{ address }}</h1>
+        <hr>
+
+        <table class="table">
+          <thead>
+            <tr><th>message</th><th>signature</th></tr>
+          </thead>
+          {% for registration in registrations %}
+            <tr>
+              <td>{{ registration.message }}</td>
+              <td>{{ registration.signature }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "main.html" %}
+
+{% block title %}Become a sponsor{% endblock %}
+
+{% block content %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+<h1 class="text-center text-uppercase">Become a PevPot sponsor</h1>
+<h3 class="text-center">Our community will <i class="fa fa-heart"></i> you!</h3>
+<br>
+
+<div class="col-lg-8 col-lg-offset-2">
+
+
+  <form method="post" enctype="multipart/form-data" action="/sponsors" class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label for="name" class="col-lg-2 control-label">Name</label>
+        <div class="col-lg-8">
+          <input type="text" maxlength="50" class="form-control" name="name" placeholder="Name" autocomplete="off" style="cursor: auto;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="url" class="col-lg-2 control-label">URL</label>
+        <div class="col-lg-8">
+          <input type="text" class="form-control" name="url" placeholder="https://" autocomplete="off" style="cursor: auto;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pic" class="col-lg-2 control-label">Banner</label>
+        <div class="col-lg-8">
+          <input type="file" name="pic">
+          <p class="help-block">Please submit a image file with 160x60px dimensions.</p>
+        </div>
+      </div>
+
+      <p class="help-block">
+        <strong>Please note:</strong> Anything that pevpot finds misleading, offensive,
+        dubious or scammy may be changed or removed without warning or refund.
+      </p>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2 text-center">
+          <button type="reset" class="btn btn-default">Clear</button>
+          <button type="submit" class="btn btn-success">Create</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+</div>
+</div>
+</div>
+</section>
+
+{% endblock %}

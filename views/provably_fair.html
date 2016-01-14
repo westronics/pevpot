@@ -1,0 +1,113 @@
+{% extends "main.html" %}
+
+{% block title %}Technical Details{% endblock %}
+{% block content %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <h1 class="text-center text-uppercase">Provably Fair Details</h1>
+        <p class="text-center text-muted">
+          ...because you shouldn't have to take our word for it
+        </p>
+        <hr>
+        <ol>
+          <li>
+            <p class="read">Every thousand bitcoin blocks (when its height ends in xxx000) the
+              draw is finalized. This block, and the previous 999 blocks are the <em>draw blocks</em>
+              and the only ones relevant for the this draw. Only transactions that
+              are confirmed in the draw blocks are considered relevant. (If a transaction
+              doesn't confirm in time, it'll be part of the next draw)
+            </p>
+          </li>
+          <li>
+            <p class="read">In 6 blocks (when the height ends in xxx006) we
+              get its block hash (in lower-case hex) and apply the key-stretching function:
+                 <code>PBKDF2(hash: 'sha256',  password: $DRAW_HASH,  salt: 'pevpot',
+                   iterations: 5000000000, length: 32)</code>
+                   <br>
+              For instance using <a href="https://github.com/digitalbazaar/forge/blob/b922df6ee8fbf8b141549e3298a88e47b6b4e832/js/pbkdf2.js#L39">forge</a> it would be:
+
+              <code><pre>
+function stretch(blockHash) {
+  return new forge.util.ByteBuffer(
+    forge.pbkdf2(blockHash, 'pevpot', 5000000000, 32, 'sha256')
+  ).toHex();
+}</pre></code>
+              <em>Or a worked example:</em> The hash of block 383006 is <code>00000000000000000ef86b27c174df6a412c0ce43eab1d532034555749294137</code>
+              so for example, (using a smaller iteration count of 100000 for testing)<br>
+              <code><pre>
+new forge.util.ByteBuffer(
+  forge.pbkdf2('00000000000000000ef86b27c174df6a412c0ce43eab1d532034555749294137', 'pevpot', 100000, 32, 'sha256')
+).toHex()
+</pre></code>
+              or in python:
+              <code><pre>
+import hashlib, hmac, pbkdf2
+pbkdf2.PBKDF2('00000000000000000ef86b27c174df6a412c0ce43eab1d532034555749294137', 'pevpot', 100000, hashlib.sha256, hmac).hexread(32)
+              </pre></code>
+
+
+                would both give
+                <code>39aed3d2eff372916100106e355384495d1794320d4c3cb4c2e0e48cc36bbd06</code>.<br><br>
+
+                This gives us a 256 bit number, known as the <strong>stretched block hash</strong>
+
+            </p>
+          </li>
+          <li>
+            <p class="read">Every  satoshi sent to the lottery address
+            during the draw blocks is given 1 chance of winning, and added to the pot, with the
+            exception of outputs less than {{ dustThreshold|formatSatoshis }} btc which
+            are considered dust and ignored for the entire process.</p>
+          </li>
+          <li>
+            <p class="read">The <i>stretched block hash</i> is <a href="https://en.wikipedia.org/wiki/Modulo_operation">moduloed</a>
+            by the <em>amount of non-dust satoshis sent to the lottery address</em> during the draw, to determine
+            the <b>winning number</b>.</p>
+          </li>
+          <li>
+            <p class="read">All transactions that are included in the draw are first sorted by their
+            hash (txid). They are then iterated through in this order, to find
+            the transaction that sent the <code>winning number</code>th satoshi!
+            This transaction is the <strong>winning transaction</strong>!</p>
+          </li>
+          <li>
+            <p class="read">The address of the <em>first</em> input of the <em>winning transaction</em>
+            will be required to sign a message (<a href="/faq#signing">why?</a>)
+            directing payment. The signed message should be in JSON:<br>
+            <code>{
+              "nick": "optional nick to identify yourself",
+              "win_address": "1BitcoinEaterAddressDontSendf59kuE",
+              "time": "2015-10-29T05:39:57.091Z",
+              "purpose": "pevpot"
+            }</code>
+
+            Where <code>win_address</code> is where you would like your winnings.
+            The signed message must be provided within 3 months of the drawing,
+            and will be published to show we sent the money to the correct place.
+          </p>
+          </li>
+          <li>
+            <p class="read">The winner wins the entire amount of (non-dust) sent
+              to the lottery address during that draw. And wins:
+                <code>(999 - BLOCKS_SINCE_STARTING)/999</code>
+              of the "early bird bonus pool". So if you bet in the first block,
+              BLOCKS_SINCE_STARTING will be 0, and you'll get the total pool. If
+              you bet on the last block (BLOCKS_SINCE_STARTING will be 999) and you
+              will get none of "early bird bonus pool". If you bet half way through
+              you'll get half of the pool. 
+
+          </p>
+          </li>
+        </ol>
+
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

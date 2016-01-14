@@ -1,0 +1,214 @@
+{% extends "main.html" %}
+
+{% block title %}Draw {{ draw.id }}{% endblock %}
+{% block content %}
+
+<section>
+  <div class="container">
+    <div class="row">
+        <h1 class="text-center">Draw # {{ draw.id }}</h1>
+        <br>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="well read">
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Pot Size:</p>
+                </div>
+                <div class="col-lg-9">
+                  <p><strong>{{ (draw.tickets_bought) | formatSatoshis}} BTC</strong></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Early Bird Bonuses:</p>
+                </div>
+                <div class="col-lg-9">
+                    {{ (draw.bonus_carry + draw.sponsor_contribution) | formatSatoshis}} BTC
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Draw Height:</p>
+                </div>
+                <div class="col-lg-9">
+                  {{ blockHeight }}
+                  <a href="https://www.blocktrail.com/BTC/block/{{ blockHeight }}" target="_blank"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Block Hash:</p>
+                </div>
+                <div class="col-lg-9">
+                  {% if draw.block_hash %}
+                  <code>{{ draw.block_hash }}</code>
+                  {% else %}
+                    <p class="text-muted">Unknown</p>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Stetched Block Hash:</p>
+                </div>
+                <div class="col-lg-9">
+                  {% if draw.stretched_block_hash %}
+                  <code>{{ draw.stretched_block_hash }}</code>
+                  {% else %}
+                    <p class="text-muted">Unknown</p>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Tickets Bought:</p>
+                </div>
+                <div class="col-lg-9">
+                  {{ draw.tickets_bought|formatNumber }}
+                  <small class="text-muted pull-right">1 satoshi = 1 ticket</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="well read">
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winning Ticket:</p>
+                </div>
+                <div class="col-lg-9">
+                  {% if draw.winning_ticket %}
+                   {{ draw.winning_ticket|formatNumber }}
+                  {% else %}
+                    <span class="text-muted">Unknown</span>
+                  {% endif %}
+                  <small class="text-muted pull-right">Stretched Block Hash % Tickets Bought</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winning Payment:</p>
+                </div>
+                <div class="col-lg-9">
+                  {% if draw.winning_payment %}
+                      {{ draw.winning_payment.txid.substring(0, 6) }}..
+                      <a href="https://blocktrail.com/BTC/tx/{{ draw.winning_payment.txid }}?txoutIdx={{ draw.winning_payment.vout }}" target="_blank">
+                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                      </a> of {{ draw.winning_payment.amount|formatSatoshis }} BTC
+                  {% else %}
+                    <span class="text-muted">Unknown</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winner Bonus:</p>
+                </div>
+                <div class="col-lg-9">
+                  {% if draw.winning_payment %}
+                  <p>{{ (draw.winner_bonus) | formatSatoshis}} BTC</p>
+                  {% else %}
+                     <span class="text-muted">Unknown</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winner Prize:</p>
+                </div>
+                <div class="col-lg-9">
+                  <strong>{{ (draw.tickets_bought + draw.winner_bonus) | formatSatoshis}} BTC</strong>
+                   <small class="text-muted pull-right">Pot Size + Winner's Early Bird Bonus</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winner Registration:</p>
+                </div>
+                <div class="col-lg-9">
+                   {%if draw.winner_registration %}
+                      <a href="/registrations/{{ draw.winner_registration.id }}">
+                        {{ draw.winner_registration.bitcoin_address }}
+                      </a>
+                   {% else %}
+                     <p class="text-muted">Unknown</p>
+                   {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <p class="thick">Winner Payment:</p>
+                </div>
+                <div class="col-lg-9">
+                   {%if draw.winner_txid %}
+                      <a href="https://www.blocktrail.com/BTC/tx/{{ draw.winner_txid }}">
+                        {{ draw.winner_txid.substring(0,30) }}...
+                      </a>
+                   {% else %}
+                     <p class="text-muted">Unknown</p>
+                   {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <div class="col-lg-4 text-center">
+              <div class="well-white">
+                <h3 class="text-uppercase"><i class="fa fa-heart-o"></i> Sponsored By <i class="fa fa-heart-o"></i></h3>
+                <hr>
+                  {% for sponsor in sponsors %}
+                    <p><a href="{{ sponsor.url }}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}"></a></p>
+                  {% endfor %}
+                  <a href="/draws/{{ draw.id }}/sponsors">...</a>
+                  <hr>
+                <small>Thanks to our sponsors for putting<br> <b>{{ draw.sponsor_contribution|formatSatoshis }}</b> btc in this draw's pot!
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="container">
+      <div class="row">
+        <hr>
+        <h3 class="text-center">Tickets Bought</h3>
+        <br>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center" colspan="2">Tickets <small>(from - to)</small></th>
+              <th class="text-center">BTC transaction</th>
+              <th class="text-center">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for payment in payments %}
+              <tr {% if payment.id == draw.winning_payment.id %}class="success thick"{%endif%}>
+                <td style="text-align: right">
+                  {{ payment.from|formatNumber }}
+                </td>
+                <td style="text-align: right">
+                  {{ payment.to|formatNumber }}
+                </td>
+                <td style="font-family: monospace">
+                  {{ payment.txid }}
+                  <a href="https://blocktrail.com/BTC/tx/{{ payment.txid }}?txoutIdx={{ payment.vout }}" target="_blank">
+                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                  </a>
+                </td>
+                <td>
+                  {{ payment.amount|formatSatoshis }} btc
+                </td>
+              </tr>
+            {% endfor %}
+       </tbody>
+      </table>
+      <br>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

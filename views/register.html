@@ -1,0 +1,121 @@
+{% extends "main.html" %}
+
+{% block title %}Register{% endblock %}
+{% block content %}
+
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+<h1 class="text-center text-uppercase"><i class="fa fa-user-plus"></i> Register</h1>
+<h3 class="text-center">Register your address, so we know where to send the winnings!</h3>
+<br>
+<div class="col-lg-8 col-lg-offset-2">
+
+  <form method="post" action="/register" class="form-horizontal">
+    <fieldset>
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="inputNick" class="label-margin">Nick</label>
+          <input id="inputNick" type="text" maxlength="50" class="form-control"
+            placeholder="Nickname" autocomplete="off"
+          onchange="updateMessage()" onkeyup="updateMessage()">
+          <p class="help-block">An optional name you want to use for your address</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="btc-address" class="label-margin">Win address</label>
+          <input id="inputAddress" type="text" class="form-control"
+            placeholder="Bitcoin Address" autocomplete="off"
+            onchange="updateMessage()" onkeyup="updateMessage()">
+          <p class="help-block">Address you want the funds to be sent if you win.</p>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="time" class="label-margin">Time</label>
+          <div class="input-group">
+            <input id="inputTime" type="text" class="form-control" placeholder="Time"
+              value="{{ currentTime.toISOString() }}" autocomplete="off"
+              onchange="updateMessage()" onkeyup="updateMessage()">
+            <span class="input-group-btn">
+              <button class="btn btn-info"
+                onclick="onTimeRefresh()"
+                type="button">Now</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <hr style="border: 1px solid black">
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="signed-message" class="label-margin">Message to Sign</label>
+          <textarea id="message" name="message" class="form-control" name="signed-message">
+          </textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="btc-address" class="label-margin">Address to Register</label>
+          <input type="text" class="form-control" name="bitcoin-address" placeholder="Bitcoin Address" autocomplete="off">
+          <p class="help-block">This address of the <em>first</em> input
+            of the transaction that sends to the lotto.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="signature" class="label-margin">Signature</label>
+          <input type="text" class="form-control" name="signature" placeholder="Signature" autocomplete="off">
+          <p class="help-block">The result of signing the message</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2 text-center">
+          <button type="reset" class="btn btn-default">Clear</button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+
+</div>
+</div>
+</div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+
+    function updateMessage() {
+      var json = {
+        nick: document.getElementById('inputNick').value,
+        win_address: document.getElementById('inputAddress').value,
+        time: document.getElementById('inputTime').value,
+        purpose: 'pevpot'
+      };
+
+      document.getElementById("message").innerHTML = JSON.stringify(json);
+    }
+    updateMessage();
+
+    function onTimeRefresh() {
+      document.getElementById('inputTime').value = new Date().toISOString();
+      updateMessage();
+    }
+  </script>
+
+
+{% endblock %}

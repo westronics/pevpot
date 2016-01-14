@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+
+{% block title %}Play{% endblock %}
+{% block content %}
+
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+<h1 class="text-center text-uppercase"><i class="fa fa-user-plus"></i> Play</h1>
+<h3 class="text-center">Create a forwarding address!</h3>
+<p class="text-muted text-center">
+  All money sent to the forwarding address will automatically be sent to the lottery
+  and if you win, the pot will automatically sent to you too!
+</p>
+<br>
+<div class="col-lg-8 col-lg-offset-2">
+
+  <form method="post" action="/play" class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="nickInput" class="label-margin">Nick</label>
+          <input id="nickInput" type="text" maxlength="50" class="form-control"
+            placeholder="Nickname" name="nick" autocomplete="off" style="cursor: auto;">
+          <p class="help-block">Optional nick name you want to use for your address</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-8">
+          <label for="winAddressInput" class="label-margin">Win address</label>
+          <input id="winAddressInput" name="win_address" type="text" class="form-control"
+            placeholder="Bitcoin Address" autocomplete="off" style="cursor: auto;">
+          <p class="help-block">If you win, where would you like the prize sent to? (note: this can't be changed).</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2 text-center">
+          <button type="reset" class="btn btn-default">Clear</button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+
+</div>
+</div>
+</div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

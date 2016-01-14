@@ -1,0 +1,160 @@
+{% extends "main.html" %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4 col-md-3 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="#chances">What is my chance of winning?</a></li>
+          <li><a href="#frequency">How often does the lotto get drawn?</a></li>
+          <li><a href="#limit">What is the most I can bet?</a></li>
+          <li><a href="#dust">What is considered dust?</a></li>
+          <li><a href="#time">How long until I get my prize?</a></li>
+          <li><a href="#refund">Can I get a refund?</a></li>
+
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="#confirmations">How many confirmations are needed?</a></li>
+          <li><a href="#reorg">What happens in a block reorg?</a></li>
+          <li><a href="#malleability">What about transaction malleability?</a></li>
+          <li><a href="#verify-guarantee">How can I verify my letter of guarantee?</a></li>
+          <li><a href="#sponsor-money">How do we know the sponsor money is getting added to the pot?</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="#discard">What prevents a miner discarding blocks?</a></li>
+          <li><a href="#order">Why are transactions sorted by txid and not block order?</a></li>
+          <li><a href="#multiple">Do you support transactions with multiple outputs?</a></li>
+          <li><a href="#signing">Why do you require the winner to sign a message?</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
+        <h1 class="page-header">Frequently Asked Questions</h1>
+
+        <div class="read" id="chances">
+                  <h4 class="title">What is my chance of winning?</h4>
+                  <p>Your chance of winning is <em>how much you sent</em>
+                    divided by <em>the amount (of non-dust) sent to the draw</em>.
+                    So lets say you send  0.01 BTC, and the total sent during
+                    the draw is 200 BTC. You would have a 0.01 / 200 (0.005%) chance
+                    of winning 200 BTC (plus sponsorship contributions).
+                  </p>
+        </div>
+
+        <div class="read" id="frequency">
+          <h4 class="title">How often does the lottery get drawn?</h4>
+          <p>The lotto is drawn every 1000 bitcoin blocks, which is approximately every week.
+            When the block height ends in 000, that is the draw block and that block and the
+            preceeding 999 blocks are used.
+        </div>
+
+        <div class="read" id="frequency">
+          <h4 class="title">What is the most I can bet?</h4>
+          <p>There is no upper-limit in how much you can bet.</p>
+        </div>
+
+        <div class="read" id="dust">
+          <h4 class="title">What is considered dust?</h4>
+          <p>Any output less than 0.0001 BTC (100 bits) is considered dust, and
+          excluded</p>
+        </div>
+
+        <div class="read" id="time">
+          <h4 class="title">How long until I get my prize?</h4>
+          <p>Between 24 and 48 hours. The first 24 hours give everyone a chance
+            to verify the fairness of the draw, and if there are no disputes the
+            result is finalized and payment will be made. Payments are made manually
+            from cold-storage, which is why up to an additional 24 hours is required.
+          </p>
+        </div>
+
+        <div class="read" id="refund">
+          <h4 class="title">Can I get a refund?</h4>
+          <p>No, sorry. There are no refunds for players or sponsors possible.</p>
+        </div>
+
+        <div class="read" id="confirmations">
+          <h4 class="title">How many confirmations are needed?</h4>
+          <p>As long as it is confirmed in the draw, it counts. If it doesn't get
+          confirmed in time, it will be in the subsequent draw. The draw actually
+          ends in the xxx000 block, but we use the hash from 6 blocks later: xxxxx006
+          so in many ways, they're actually getting 6 confirmations.
+          </p>
+        </div>
+
+        <div class="read" id="reorg">
+          <h4 class="title">What happens in a block reorg?</h4>
+          <p>
+            Occasionally in bitcoin, the blockchain will go through a reorganization
+            and the hash of a certain block height will change. If this happens to
+            a draw hash, <strong>we use the new block hash</strong> as it's the
+            only way we can prove it's fair.
+          </p>
+        </div>
+
+        <div class="read" id="malleability">
+          <h4 class="title">What about transaction malleability</h4>
+          <p>
+            We only care about the final transactions in the draw blocks. If transaction
+            ids change, or some transactions were double spent it does not affect the draw.
+          </p>
+        </div>
+
+        <div class="read" id="verify-guarantee">
+          <h4 class="title">How can I verify my letter of guarantee</h4>
+          <p>
+            We use this bitcoin address to sign all letters of guarantee: 13jiZJEVYejrtmwGdryPctGoku7kn5qRHJ
+          </p>
+        </div>
+
+        <div class="read" id="sponsor-money">
+          <h4 class="title">How do we know the sponsor money is getting added to the pot?</h4>
+          <p>
+            All sponsor addresses are derived from the bip32 pub key:
+            <code>xpub6EAA7AfEvViuBs6sCp81j73ParX6MXTgiXNaLNbKe3PM9NtrYiP8YBbkPQLwWRZzQFBCDRn1abVymEF3VWZW28d2eciT962FHDwUAgjPN4Y</code>
+            and the sponsor contribution will be 90% of the amount sent during last draw.
+          </p>
+        </div>
+
+        <div class="read" id="discard">
+          <h4 class="title">What prevents a miner discarding blocks?</h4>
+          <p>Once we get a hash, we apply an extremely time-consuming key streching
+            function to it (as outlined in the provably fair), which should take
+            at least half an hour for a very high end computer to compute. This means
+            if a miner wanted to selectively discard blocks, it would be forced to first run this function before publishing the block while hoping to have it orphaned. The economics of this quickly makes it impossible,
+            even for huge rewards.
+          </p>
+        </div>
+
+        <div class="read" id="order">
+          <h4 class="title">Why are transactions sorted by txid and not block order</h4>
+          <p>Sorting by block order is a bit conceptually nicer, but significantly
+            harder to get from common APIs. Listing transactions is supported by dozens
+            of services however, so this just makes 3rd party verification much simpler.
+          </p>
+        </div>
+
+        <div class="read" id="multiple">
+          <h4 class="title">Do you support transactions with multiple outputs?</h4>
+          <p>Yes, and they can have multiple outputs to the lottery address themselves.
+            Just remember, all dust outputs are excluded.
+          </p>
+        </div>
+
+        <div class="read" id="signing">
+          <h4 class="title">Why do you require the winner to sign a message?</h4>
+          <p>
+            There's quite a few reasons for this:
+            <ul>
+              <li>It allows people to have the prize to go to cold addresses, or
+                multisig ones</li>
+              <li>It avoids us sending money to unclaimable places</li>
+              <li>Gives us the chance to sort out any mess (e.g. people sending from shared wallets)</li>
+            </ul>
+          </p>
+        </div>
+
+</div>
+
+</div>
+</div>
+{% endblock %}

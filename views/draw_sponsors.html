@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% block title %}Sponsors{% endblock %}
+{% block content %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <h1 class="text-center">Draw <a href="/draws/{{ drawId}}">#{{ drawId }}</a> Sponsors</h1>
+      <br>
+      <h3 class="text-center">Thank you for sharing <i class="fa fa-heart"></i> with our community!</h3>
+      <br>
+      <div class="col-lg-8 col-lg-offset-2">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Sponsor</th>
+              <th colspan="2">Sponsored Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sponsor in sponsors %}
+            <tr>
+              <td style="vertical-align: middle">{{ loop.index }}</td>
+              <td>
+                <a href="{{ sponsor.url }}">
+                  <img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}">
+                </a>
+              </td>
+              <td style="vertical-align: middle">{{ sponsor.amount|formatSatoshis }} BTC</td>
+              <td style="vertical-align: middle">
+                <a href="/sponsors/{{ sponsor.id}}">...</a>
+              </td>
+           </tr>
+           {% endfor %}
+         </table>
+       </div>
+     </div>
+   </div>
+ </section>
+
+{% endblock %}

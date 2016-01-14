@@ -1,0 +1,250 @@
+{% extends "main.html" %}
+{% block title %}Bitcoin Lottery{% endblock %}
+{% block content %}
+<section>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="jumbotron">
+        <h2 class="text-uppercase call-to-action text-center">The Bitcoin Lottery</h2>
+        <p class="text-center">draw #{{ draw.id }} ends in <strong>{{blocksToGo}} bitcoin blocks</strong>
+          (#{{drawEnd}})</p>
+                     <div class="progress progress-striped progress-border active">
+                       <div class="progress-bar progress-bar-success" style="width: {{ (1000-blocksToGo)/10 }}%"></div>
+                   </div>
+        <div class="row text-center">
+          <div class="col-lg-4" style="margin-top:30px">
+            <p><strong>Current Pot: </strong></p>
+          </div>
+          <div class="col-lg-8" style="font-size: 4em">
+              <strong>{{ draw.tickets_bought|formatSatoshis(2) }} BTC</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            Estimated time remaining:
+          </div>
+          <div class="col-lg-8">
+              {{ estimatedEnd|timeAgo }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            Lotto Address:
+          </div>
+          <div class="col-lg-8">
+              <code>{{ lottoAddress }}</code>
+              <a href="https://www.blocktrail.com/BTC/address/{{ lottoAddress }}" target="_blank">
+                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+              </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            Tickets Bought:
+          </div>
+          <div class="col-lg-8">
+              {{ draw.tickets_bought|formatSatoshis }} BTC
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            Early Bird Bonus:
+          </div>
+          <div class="col-lg-8">
+              {{ draw.sponsor_contribution|formatSatoshis }} BTC
+          </div>
+        </div>
+
+        <hr>
+        <p class="text-center">
+          <a class="btn btn-warning btn-lg text-uppercase" href="/provably-fair" role="button">Provably Fair</a>
+          <a class="btn btn-success btn-lg text-uppercase" href="/how-it-works" role="button">How it Works?</a>
+        </p>
+      </div>
+    </div>
+    <div class="col-sm-4 text-center">
+      <div class="well-white">
+          <h3 class="text-uppercase"><i class="fa fa-heart-o"></i> Sponsored By <i class="fa fa-heart-o"></i></h3>
+          <hr>
+
+          <ul class="list-unstyled">
+          {% for sponsor in sponsors %}
+            <li>
+                <a href="{{ sponsor.url }}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}"> </a>
+            </li>
+          {% endfor %}
+          <li><a href="/draws/{{ draw.id }}/sponsors">...</a></li>
+        </ul>
+        <small>
+          Thanks to our sponsors for adding <br> <b>{{ draw.sponsor_contribution|formatSatoshis }}</b> btc to player bonuses!
+        </small>
+      </div>
+      <p class="read">
+        <a href="/sponsors">Sponsor next draw!</a>
+      </p>
+    </div>
+
+  </div>
+  </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row">
+        <br><br>
+
+        <div class="col-lg-3 col-xs-6 text-center">
+          <span class="fa-stack fa-4x">
+            <i class="fa fa-circle fa-stack-2x text-black"></i>
+            <i class="fa fa-trophy fa-stack-1x fa-inverse"></i>
+          </span>
+          <h4 class="text-uppercase">Positive Expected Value</h4>
+            <p>In PevPot the Return to Player (RTP) is <strong>higher than 100%</strong>. Said in other words, the aggregate of our players <strong>make more than they bet</strong> in this lotto.</p>
+        </div>
+
+        <div class="col-lg-3 col-xs-6 text-center">
+          <span class="fa-stack fa-4x">
+            <i class="fa fa-circle fa-stack-2x text-black"></i>
+            <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+          </span>
+          <h4 class="text-uppercase">Provably fair</h4>
+          <p>Provably fair betting means that <em>you</em> can check the
+            results are actually fair. </p>
+
+        </div>
+        <style>@media (max-width: 1199px) {
+            .breaker {
+              clear: both;
+            }
+           }</style>
+        <div class="breaker"><div>
+
+        <div class="col-lg-3 col-xs-6 text-center h">
+          <span class="fa-stack fa-4x">
+            <i class="fa fa-circle fa-stack-2x text-black"></i>
+            <i class="fa fa-gift fa-stack-1x fa-inverse"></i>
+          </span>
+          <h4 class="text-uppercase">Sponsors</h4>
+          <p>Our sponsors through their contributions make it possible for you to have a positive expected value.</p>
+        </div>
+
+        <div class="col-lg-3 col-xs-6 text-center h">
+          <span class="fa-stack fa-4x">
+            <i class="fa fa-circle fa-stack-2x text-black"></i>
+            <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+          </span>
+          <h4 class="text-uppercase">Secure</h4>
+          <p>Offline storage of funds for maximum <strong>security</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <br><br>
+  </section>
+
+  <style>
+  @media (max-width: 768px) {
+    .txid {
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+      width: 200px;
+      display: inline-block;
+    }
+  }
+
+  </style>
+
+  <section>
+    <div class="container">
+      <div class="row">
+        <br>
+        <br>
+        <hr>
+        <h2 class="text-center">Latest Tickets in Draw</h2>
+        <br>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">BTC transaction</th>
+              <th class="text-center">Amount</th>
+              <th class="text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for payment in payments %}
+              <tr>
+                <td style="font-family: monospace;">
+                    <span class="txid">{{ payment.txid }}</span>
+                    <a href="https://blocktrail.com/BTC/tx/{{ payment.txid }}?txoutIdx={{ payment.vout }}" target="_blank">
+                      <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                    </a>
+                </td>
+                <td>
+                  {{ payment.amount|formatSatoshis }} btc
+                </td>
+                <td>
+                  {% if payment.block_height == null %}
+                  <span class="label label-warning">Unconfirmed</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+       </tbody>
+      </table>
+      <a href="/draws/{{draw.id}}">show all..</a>
+      <br>
+    </div>
+  </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row" id="winners">
+        <br>
+        <hr>
+        <h2 class="text-center">Past Draws</h2>
+        <table class="table table-striped table-hover">
+               <thead>
+                 <tr>
+                   <th>#</th>
+                   <th>Winning Ticket</th>
+                   <th>Prize</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 {% for draw in drawHistory %}
+                  <tr>
+                    <td><a href="/draws/{{ draw.id }}">{{ draw.id }}</a></td>
+                    <td>{% if draw.winning_ticket %} {{ draw.winning_ticket|formatNumber }} {% endif %}</td>
+                    <td>{{ draw.prize|formatSatoshis }} btc
+                      {% if draw.winner_txid %}
+                      <a href="https://blocktrail.com/BTC/tx/{{ draw.winner_txid }}" target="_blank">
+                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                      </a>
+                      {% endif %}
+
+                    </td>
+                  </tr>
+                 {%endfor%}
+               </tbody>
+             </table>
+    </div>
+  </div>
+</section>
+
+<br>
+<div class="text-center" style="background-color:#F4F4F4">
+<!--
+<blockquote>
+  <p>"No one is luckier than him who believes in his luck".</p>
+  <small>German proverb</small>
+</blockquote>
+</div>
+-->
+<blockquote>
+  <p>"Everything in life is luck."</p>
+  <small>Donald Trump.</small>
+</blockquote>
+</div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "main.html" %}
+{% block title %}How to Play{% endblock %}
+{% block content %}
+<section id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <h1 class="text-center text-uppercase">How to Play</h1>
+        <br>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <h2 class="text-center">Playing direct</h2>
+          <hr>
+
+          <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+              This can only be done from a bitcoin wallet in which supports
+                both receiving and signing a message from the sending address.
+          </div>
+
+          <div class="well">
+            <h3><i class="fa fa-paper-plane"></i> Send the money to the lotto address</h3>
+            <p class="read">From your bitcoin wallet send the money to <code>{{ lottoAddress }}</code>.
+              Every satoshi sent gives you one chance of winning. The minimium send is 0.0001 BTC (100 bits)
+              and there is no maximium.
+            </p>
+          </div>
+
+          <div class="well">
+            <h3><i class="fa fa-sign-in"></i> Register (Optional)</h3>
+            <p class="read"><a href="/register">Register</a> your sending bitcoin address
+              (the first of the inputs) by signing a message. This step is not mandatory at this point.</p>
+          </div>
+
+          <div class="well">
+            <h3><i class="fa fa-trophy"></i> Win (hopefully!)</h3>
+            <p class="read">Our <a href="/provably-fair">provably fair</a> algorithm will
+              pick the winner, which will be shown on the page. If you won, and have
+              not yet done so you will need to register your sending address in
+              the next three months. The entire pot will be sent to registered
+              address!
+          </div>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <h2 class="text-center">Play from anywhere</h2>
+        <hr>
+        <div class="alert alert-success" role="alert">
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+          This is easy and our recommended method, because you do not need to register after creating your forwarding address.
+        </div>
+
+        <div class="well">
+          <h3><i class="fa fa-forward"></i> Create a forwarding address.</h3>
+          <p class="read"><a href="/play">Create a forwarding address</a> by giving
+            us the address you'd like your winnings to go to. Make sure to save (and verify)
+            our letter of guarantee in case anything goes wrong.
+          </p>
+        </div>
+
+        <div class="well">
+          <h3><i class="fa fa-paper-plane"></i> Send money to the forwarding address.</h3>
+          <p class="read">All money sent to your forwarding address, will automatically be
+            forwarded to the lotto address (minus only that to cover mining fee costs).</p>
+        </div>
+
+        <div class="well">
+          <h3><i class="fa fa-trophy"></i> Win (hopefully!)</h3>
+          <p class="read">
+            Our <a href="/provably-fair">provably fair</a> algorithm will pick the winner of the entire pot,
+            which will be announced on the page. If this is you, just sit back and relax and the
+            pot will shortly be automatically be sent to your chosen address!
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

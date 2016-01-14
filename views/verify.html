@@ -1,0 +1,236 @@
+{% extends "main.html" %}
+{% block title %}Verify Draw{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+      <h1 class="text-center">Verify Games</h1>
+      <br>
+      <p class="big">
+          This page will allow you to verify any game. Please review the source code
+          and download your own copy of <a href="/verify.js" target="_blank">verify.js</a>
+          which has all the logic.
+      </p>
+    </div>
+  </div>
+
+      <div class="well-white">
+        <h2><span class="gray">Step 1.</span>  Get the draw information</h2>
+        <br>
+        <div class="row">
+          <div class="col-lg-6">
+            <div>
+              <p><b>Draw Number: </b></p>
+                <input class="form-control" type="number" onchange="drawChange1()" id="draw-number-1" value="1">
+
+              <br>
+            </div>
+              <div class="col-lg-6 col-lg-offset-3 text-center">
+                <br><br>
+                <button type="button" class="btn btn-primary btn-block" onclick="fetch1()">Fetch Data</button>
+              </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="col-lg-12">
+              <p><b>Draws Block Hash (<span id="draw-block-height-1">xxx006</span>): </b></p>
+              <input class="form-control" type="text" id="draw-block-hash-1" value="" size="72" readonly>
+              <br><br>
+              <p><b>Draw Transactions (<span id="draw-block-from-1">xxx001</span> to
+                <span id="draw-block-to-1">xxy000</span>): </b></p>
+              <textarea  id="draw-transactions-1" class="form-control" rows="3" style="resize:none;" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="well-white">
+        <h2><span class="gray">Step 2.</span>  Stretch the block hash</h2>
+        <br>
+        <div class="row">
+          <div class="col-lg-6">
+              <p><b>Block Hash: </b></p>
+              <input class="form-control" type="text" id="block-hash-2" placeholder="Block hash from step 1" value="">
+
+              <br>
+              <p><b>Iterations: </b></p>
+              <input class="form-control" type="number" id="iterations-2" value="5000000000">
+              <br>
+              <br>
+              <div class="text-center">
+                <button id="stretch-2" type="button" class="btn btn-primary btn-block" onclick="stretch2()">Stretch Hash</button>
+              </div>
+          </div>
+          <div class="col-lg-6">
+              <p><b>Stretched Hash: </b></p>
+              <input class="form-control" type="text" value="" id="stretched-hash-2" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <br>
+            <p class="help-block">
+              <span style="color:red;">Note:</span> This takes an *extremely* (like 12+ hours) long amount of time to run,
+              you can reduce the iterations from 5000000000 to make it run quicker,
+              but it won't give the correct result. You can also use
+              <a href="https://github.com/moneypot/pevpot-stretch">a native tool</a> instead, for much quicker stretching.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="well-white">
+        <h2><span class="gray">Step 3.</span>  Find the winner</h2>
+        <br>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-11">
+                <p><b>Stretched Block Hash: </b></p>
+                <input id="stretched-hash-3" class="form-control" type="text" placeholder="Stretched block hash from step 2">
+                <br><br>
+                <p><b>Draw Transactions: </b></p>
+                <textarea id="draw-transactions-3" class="form-control" rows="3" style="resize:none;" placeholder="List of transactions from step 1"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 text-center">
+                <br>
+                <button onclick="find3()" type="button" class="btn btn-primary btn-block">Find</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <p><b>Tickets Bought:</b>
+            <input class="form-control" type="text" id="tickets-bought-3" value="" disabled size="72">
+            </p>
+
+            <p><b>Winning Ticket: </b>
+            <input class="form-control" type="text" id="winning-ticket-3" value="" disabled size="72">
+            </p>
+
+            <p><b>Winning Transaction: </b>
+            <input  class="form-control" type="text" id="winning-txid-3" value="" disabled size="72">
+            </p>
+            
+            <p><b>Prize:</b>
+            <input class="form-control" type="text" id="prize-3" value="" disabled size="72">
+            </p>
+
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/forge/forge.js"></script>
+<script type="text/javascript" src="/forge/md.js"></script>
+<script type="text/javascript" src="/forge/util.js"></script>
+<script type="text/javascript" src="/forge/sha256.js"></script>
+<script type="text/javascript" src="/forge/hmac.js"></script>
+<script type="text/javascript" src="/forge/pbkdf2.js"></script>
+<script type="text/javascript" src="/big-integer/BigInteger.min.js"></script>
+<script type="text/javascript" src="/verify.js"></script>
+<script>
+function getDrawEndByDrawId(draw) {
+  return 383000 + (1000 * draw);
+}
+function getDrawHashBlockByDrawId(draw) {
+  return 383000 + (1000 * draw) + 6 ;
+}
+
+drawChange1();
+function drawChange1() {
+  var draw = parseInt(document.getElementById('draw-number-1').value);
+  document.getElementById('draw-block-height-1').innerText = getDrawHashBlockByDrawId(draw).toString();
+  document.getElementById('draw-block-from-1').innerText = (getDrawEndByDrawId(draw) - 999).toString();
+  document.getElementById('draw-block-to-1').innerText = getDrawEndByDrawId(draw).toString();
+
+  document.getElementById('draw-block-hash-1').value = '';
+}
+
+function fetch1() {
+  var draw = parseInt(document.getElementById('draw-number-1').value);
+  document.getElementById('draw-block-height-1').innerText = getDrawHashBlockByDrawId(draw).toString();
+  document.getElementById('draw-block-from-1').innerText = (getDrawEndByDrawId(draw) - 999).toString();
+  document.getElementById('draw-block-to-1').innerText = getDrawEndByDrawId(draw).toString();
+
+
+  document.getElementById('draw-block-hash-1').value = '...fetching...';
+  document.getElementById('draw-transactions-1').value = '...fetching...';
+
+  getBlockHash(getDrawHashBlockByDrawId(draw), function(err, hash) {
+    if (err)
+      str = 'Error: ' + err;
+    else
+      str = hash;
+
+    document.getElementById('draw-block-hash-1').value = str;
+  });
+
+
+ getLotteryTransactions(getDrawEndByDrawId(draw), getDrawEndByDrawId(draw) - 999, function(err, transactions){
+   if (err) {
+     document.getElementById('draw-transactions-1').value = 'Got error: ' + err;
+     return;
+   }
+
+   var text = transactions.map(function(transaction) {
+     return JSON.stringify(transaction);
+   }).join('\n');
+
+   document.getElementById('draw-transactions-1').value = text;
+
+
+ });
+
+}
+
+function stretch2() {
+  var blockHash = document.getElementById('block-hash-2').value;
+  var iterations = parseInt(document.getElementById('iterations-2').value);
+
+  var sh = document.getElementById('stretched-hash-2');
+  sh.value = '..computing..';
+  var st = document.getElementById('stretch-2');
+  st.setAttribute('disabled', true);
+
+  stretchBlockHash(blockHash, iterations, function(err, result) {
+    st.removeAttribute('disabled');
+    if (err) {
+      sh.value = 'Error: ' + err;
+      return;
+    }
+    sh.value = result;
+
+  });
+
+}
+
+function find3() {
+  var stretchedHash = document.getElementById('stretched-hash-3').value;
+  var transactionStr = document.getElementById('draw-transactions-3').value;
+  var transactions = transactionStr.split('\n').map(JSON.parse);
+
+  var r = findDraw(stretchedHash, transactions);
+
+  document.getElementById('tickets-bought-3').value = r.tickets;
+  document.getElementById('winning-ticket-3').value = r.winningTicket;
+  document.getElementById('winning-txid-3').value = r.winningTx.txid;
+  
+  var blocksSinceDraw = (r.winningTx.height-1) % 1000;
+  var fraction = (999 - blocksSinceDraw) / 999;  
+  
+  document.getElementById('prize-3').value = + r.tickets/1e8 + ' BTC + ' +
+    (fraction*100).toFixed(3) + '% of the early bird bonus pool'; 
+
+
+
+}
+
+</script>
+{% endblock %}

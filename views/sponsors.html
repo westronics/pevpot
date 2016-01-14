@@ -1,0 +1,97 @@
+{% extends "main.html" %}
+
+{% block title %}Sponsors{% endblock %}
+
+{% block content %}
+<section style="min-height: 480px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <h2 class="text-center text-uppercase">Next Draw Sponsors</h2>
+        <hr class="star-primary">
+        <br>
+        <p class="big text-center text-muted">
+            (Still in progress, positions finalize at end of current draw)
+        </p>
+        <br>
+
+
+        <ol class="gray">
+          {% for sponsor in nextSponsors %}
+          <div class="row">
+            <div class="col-lg-4 col-lg-offset-2 text-center">
+              <li>
+              <a href="/sponsors/{{ sponsor.id}}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}"></a>
+            </div>
+            <div class="col-lg-4 col-lg-offset-1">
+              <p class="big" style="margin-top:20px;">
+                {{ sponsor.amount | formatSatoshis }} BTC
+              </p>
+            </div>
+          </div>
+          </li >
+          {% endfor %}
+        </ol>
+          <hr>
+                    <h1 class="text-center"><a href="/sponsor">Become a sponsor!</a></h1>
+          <hr>
+
+        <br><br>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-7">
+        <h3 class="text-center text-uppercase">All-Time Biggest Sponsors</h3>
+        <hr class="star-primary">
+        <ol class="gray">
+            {% for sponsor in biggestSponsors %}
+          <div class="row">
+            <div class="col-lg-4 col-lg-offset-2 text-center">
+              <li>
+                <a href="/sponsors/{{ sponsor.id}}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}"></a>
+            </div>
+            <div class="col-lg-4 col-lg-offset-1">
+              <p class="big" style="margin-top:20px;">
+                {{ sponsor.amount | formatSatoshis }} BTC
+              </p>
+            </div>
+          </div>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+        <div class="col-lg-5 text-center">
+          <h3 class="text-uppercase">Newest Sponsors</h3>
+          <hr class="star-primary">
+          <ol class="gray" style="list-style: none;">
+            {% for sponsor in newestSponsors %}
+            <li>
+
+                  <a href="/sponsors/{{ sponsor.id}}"><img src="/sponsors/{{ sponsor.id }}/pic" alt="{{ sponsor.name }}"></a>
+
+            </li>
+              {% endfor %}
+          </ol>
+        </div>
+    </div>
+    <br>
+
+    <hr>
+    <br>
+    <div class="col-lg-4 col-lg-offset-2">
+
+      <p class="read">
+        Sponsors play a very important role in PevPot. In each round, 90% of sponsored
+        amount is used as a prize for the next round. 10% is used to run the site. The
+        sponsor that sends the most, gets to be featured prominently as the "Draw Sponsor"
+        and the top 5 get on the home page. <a href="/sponsor">Become a Sponsor.</a>
+      </p>
+      <br>
+    </div>
+    <div class="col-lg-4">
+      <img src="img/sponsor_thanks_image.jpg" alt="Pevpot Sponsors" class="img-responsive">
+    </div>
+  </div>
+</section>
+{% endblock %}

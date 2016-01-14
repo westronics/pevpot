@@ -1,0 +1,112 @@
+{% extends "main.html" %}
+{% block title %}Verify Draw{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+      <h1 class="text-center">How it Works</h1>
+      <br>
+      <p class="big">
+          PevPot is the only <b>Positive Expected Value</b> lottery. Here's how it works:
+      </p>
+      <br>
+
+
+      <div class="well-white">
+        <div class="media">
+          <div class="media-left">
+            <img class="media-object" src="/img/icon_empty_pot.png" alt="PevPot" style="max-width:80px; margin-top:25px;">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading"><span class="gray">1.</span>  Start of Draw</h2>
+            <p class="read">A new draw starts every thousand bitcoin blocks (aprox. 1 week). When it starts the pot is empty.</p>
+          </div>
+        </div>
+      </div>
+
+
+        <div class="well-white">
+          <div class="media">
+            <div class="media-left">
+              <img class="media-object" src="/img/icon_send_btc.png" style="max-width:80px; margin-top:25px;" alt="PevPot">
+            </div>
+            <div class="media-body">
+              <h2 class="media-heading"><span class="gray">2.</span>  Players buy Tickets</h2>
+              <p class="read">Players buy tickets using bitcoin. For every (non-dust) satoshi
+                sent you gets 1 ticket to win.</p>
+              <p class="read">The <b>size of the pot</b> is determined by the sum of all player's tickets. We don't know for sure until the end.</b>
+              <p class="read">So that means, the more tickets sold the less chance of winning but the bigger the prize </p>
+            </div>
+          </div>
+        </div>
+
+
+      <div class="well-white">
+        <div class="media">
+          <div class="media-left">
+            <img class="media-object" src="/img/icon_full_pot.png" style="max-width:80px; margin-top:25px;" alt="PevPot">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading"><span class="gray">3.</span>  Draw Ends</h2>
+              <p class="read">The draw will finish after a thousand bitcoin blocks.
+              <p class="read">The size of the pot gets locked and it will become the prize for the winner.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="well-white">
+        <div class="media">
+          <div class="media-left">
+            <img class="media-object" src="/img/icon_btc_winner.png" style="max-width:80px; margin-top:25px;" alt="PevPot">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading"><span class="gray">4.</span>  The Winner is Picked</h2>
+            <p class="read">We pick a random ticket to win after the draw is over (this takes a few hours, to avoid the possibility of miners cheating).
+              For more information of how this process is done check out our <a href="/provably_fair">Provably fair page.</a></p>
+            <p class="read">The lucky winner is announced, which can be seen on the draw page and within 24 hours
+              or so will be sent their prize!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="well-white">
+        <div class="media">
+          <div class="media-left">
+            <img class="media-object" src="/img/icon_time.png" style="max-width:50px; margin-top:25px;" alt="PevPot">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading"><span class="gray">5.</span>  Early Bird Bonus</h2>
+            <p class="read">In addition to winning the entire pot, the winner
+              also qualifies for a percent of early bird bonus, which is graciously
+              filled by the <strong>draw sponsors</strong>. The earlier in the draw
+              that you bought your tickets, the more of the early bird bonuses you get!
+            </p>
+            <p class="read">
+              This is what makes the lottery <strong>Positive Expected Value</strong>
+              because players get out more than what they do, and is designed to encourage
+              players to not wait until the last moment to buy tickets.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="well-white">
+        <div class="media">
+          <div class="media-left">
+            <img class="media-object" src="/img/icon_empty_pot_transp.png" style="max-width:80px; margin-top:25px;" alt="PevPot">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading"><span class="gray">6.</span>  New Draw</h2>
+            <p class="read">Meanwhile, a new draw has started. Right after a draw ends, another starts with the next thousand bitcoin blocks.</p>
+            <p class="read">The pot is empty again until more tickets are bought, and so on.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
